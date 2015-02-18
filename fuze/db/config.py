@@ -32,6 +32,24 @@ class Config(object):
                 buffer.append("/%s" % self.__database)
             txt = "".join(buffer)
             self.__connection_string = txt
+        elif driver == "postgres":
+            buffer = []
+            buffer.append("postgresql://")
+            if self.__username is not None:
+                buffer.append("%s:%s@" % (self.__username, self.__password))
+            buffer.append(self.__uri)
+            if self.__database is not None:
+                buffer.append("/%s" % self.__database)
+            txt = "".join(buffer)
+            self.__connection_string = txt
+
+            # conn_str = 'postgresql://%s:%s@%s:%s/%s' % (
+            #     cfg["USER"],
+            #     cfg["PASSWORD"],
+            #     cfg["HOST"],
+            #     str(cfg["PORT"]),
+            #     cfg["NAME"]
+            # )
         else:
             raise Exception("The driver type is not recognized: %s" % driver)
         return self.__connection_string

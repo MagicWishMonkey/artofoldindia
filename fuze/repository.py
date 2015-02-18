@@ -27,35 +27,35 @@ class Repository(IRepository, Extension):
         self.__cache__ = None
 
 
-    @property
-    def cache(self):
-        cache = self.__cache__
-        if cache is not None:
-            return cache
-
-        bucket = self.redis.get(self.__class__.__name__.lower())
-        if bucket is None:
-            cfg = self.__cache_config__
-            try:
-                if cfg["name"] is None:
-                    cfg["name"] = self.__class__.__name__.lower()
-            except:
-                cfg["name"] = self.__class__.__name__.lower()
-                if cfg.get("keygen", None) is None:
-                    cfg["keygen"] = self.__class__.gen_uri
-
-            if self.__class__.__table_name__ is None:
-                self.__class__.__table_name__ = self.table_name
-            bucket = self.redis.bucket(
-                cfg["name"],
-                ttl=cfg["ttl"],
-                encoder=cfg["encoder"],
-                decoder=cfg["decoder"],
-                adapter=cfg["adapter"],
-                keygen=cfg["keygen"]
-            )
-        self.__cache__ = bucket
-        return bucket
+    # @property
+    # def cache(self):
+    #     cache = self.__cache__
+    #     if cache is not None:
+    #         return cache
+    #
+    #     bucket = self.redis.get(self.__class__.__name__.lower())
+    #     if bucket is None:
+    #         cfg = self.__cache_config__
+    #         try:
+    #             if cfg["name"] is None:
+    #                 cfg["name"] = self.__class__.__name__.lower()
+    #         except:
+    #             cfg["name"] = self.__class__.__name__.lower()
+    #             if cfg.get("keygen", None) is None:
+    #                 cfg["keygen"] = self.__class__.gen_uri
+    #
+    #         if self.__class__.__table_name__ is None:
+    #             self.__class__.__table_name__ = self.table_name
+    #         bucket = self.redis.bucket(
+    #             cfg["name"],
+    #             ttl=cfg["ttl"],
+    #             encoder=cfg["encoder"],
+    #             decoder=cfg["decoder"],
+    #             adapter=cfg["adapter"],
+    #             keygen=cfg["keygen"]
+    #         )
+    #     self.__cache__ = bucket
+    #     return bucket
 
 
     def initialize(self):
@@ -107,7 +107,6 @@ class Repository(IRepository, Extension):
             self.__class__.__table_name__ = table_name
         return table_name
 
-    #
     # @property
     # def label(self):
     #     return self.__class__.__name__
@@ -148,27 +147,27 @@ class Repository(IRepository, Extension):
             else:
                 keys = self.lookup(keys)
 
-        cache = self.cache
-        cached = cache.fetch(keys)
-        if len(cached) > 0:
-            trace(len(cached), "objects in", self.label, "cache")
-            #trace("%s objects in cache." % str(len(cached)))
-            if len(cached) == len(keys):
-                if single is True:
-                    return cached[0] if len(cached) > 0 else None
-                return cached
-
-        if len(cached) > 0:
-            cache_keys = set([c.id for c in cached])
-            keys = [k for k in keys if k not in cache_keys]
+        # cache = self.cache
+        # cached = cache.fetch(keys)
+        # if len(cached) > 0:
+        #     trace(len(cached), "objects in", self.label, "cache")
+        #     #trace("%s objects in cache." % str(len(cached)))
+        #     if len(cached) == len(keys):
+        #         if single is True:
+        #             return cached[0] if len(cached) > 0 else None
+        #         return cached
+        #
+        # if len(cached) > 0:
+        #     cache_keys = set([c.id for c in cached])
+        #     keys = [k for k in keys if k not in cache_keys]
 
         query = self.select_query(keys)
         models = query.select()
-        if len(models) > 0:
-            cache.save(models)
-
-        if cached:
-            models.extend(cached)
+        # if len(models) > 0:
+        #     cache.save(models)
+        #
+        # if cached:
+        #     models.extend(cached)
 
         if single is True:
             return models[0] if len(models) > 0 else None

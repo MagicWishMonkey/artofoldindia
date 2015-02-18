@@ -1,7 +1,6 @@
 from fuze import *
 from fuze.context import Context
 from fuze.db.database import Database
-from fuze.db.redis_client import RedisClient
 
 
 class App(object):
@@ -32,7 +31,6 @@ class App(object):
 
         raise Exception("The requested database could not be found: %s" % name)
 
-
     def context(self):
         return Context(self)
 
@@ -46,6 +44,7 @@ class App(object):
     @staticmethod
     def get():
         return App.__instance__
+
 
 @App.plugin
 def load(self):
@@ -67,10 +66,6 @@ def load(self):
             db_cfg = databases[name]
             db_cfg["label"] = "%s:%s" % (db_cfg["driver"], name)
             driver = db_cfg["driver"]
-            if driver == "redis":
-                db = RedisClient.open(**(db_cfg))
-                dbs.append((name, db))
-                continue
             db = Database.open(**(db_cfg))
             dbs.append((name, db))
             if name == "default":
