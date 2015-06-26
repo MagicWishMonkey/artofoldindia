@@ -17,3 +17,5 @@
 .idea/
 *.iml
 settings.override.json
+
+./.local$
