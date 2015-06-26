@@ -273,7 +273,7 @@ class Database(object):
         config = Config(
             driver=driver,
             label=kwd.get("label", None),
-            uri=kwd.get("uri", None),
+            uri=kwd.get("server", kwd.get("uri", None)),
             database=kwd.get("database", None),
             username=kwd.get("username", None),
             password=kwd.get("password", None),

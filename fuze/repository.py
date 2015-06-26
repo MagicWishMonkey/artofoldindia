@@ -73,10 +73,10 @@ class Repository(IRepository, Extension):
         sql = self.__class__.__select_query__
         assert sql is not None, "The select query is not specified for %s" % self.label
 
-        model_class = self.model_class
+        #model_class = self.model_class
         query = self.query(sql)
-        if model_class is not None:
-            query.adapter = model_class.create
+        if self.model_class is not None:
+            query.adapter = self.model_spawn
 
         if len(keys) == 0:
             return query

@@ -1,7 +1,7 @@
 from aoi.products.products import Products
 from aoi.products.product import Product
 
-Products.__table_name__ = "member"
+Products.__table_name__ = "products"
 Products.__cache_config__["ttl"] = 120
 
 

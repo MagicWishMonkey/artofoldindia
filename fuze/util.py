@@ -539,6 +539,26 @@ def is_email(email):
 def format_email(email):
     return EmailAddress.format(email)
 
+
+def to_unicode(txt, encoding="utf-8"):
+    try:
+        return unicode(txt, encoding)
+    except Exception, ex:
+        if txt is None:
+            return None
+        elif isinstance(txt, unicode):
+            return txt
+
+        try:
+            return unicode(txt, "Latin-1")
+        except Exception, e:
+            raise Exception("Unable to convert to unicode: %s" % e.message)
+
+def fix_str(txt):
+    if txt is not None and isinstance(txt, basestring) is True:
+        txt = to_unicode(txt, encoding="Latin-1").encode("utf-8")
+    return txt
+
 # def gzcompress(data, compression_level=9):
 #     assert data is not None, "The data parameter is null!"
 #

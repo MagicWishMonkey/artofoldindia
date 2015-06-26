@@ -17,4 +17,5 @@ class Product(Model):
         }
 
 
-
+    def __repr__(self):
+        return "Product#%s - %s" % (str(self.id), self.label)
