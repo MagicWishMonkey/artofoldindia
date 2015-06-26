@@ -32,6 +32,11 @@ def setup_categories(self):
     furnishings.append("Consoles")
     furnishings.append("Misc.")
 
+    #DELETE
+    furnishings.append("Trunks")
+    furnishings.append("Consoles")
+    furnishings.append("Misc.")
+
 
 
 def init():
